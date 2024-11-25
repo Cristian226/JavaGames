@@ -1,7 +1,11 @@
 package Interfaces;
 
+import Games.Snake;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainMenu extends JFrame {
     private JPanel buttonsPanel;
@@ -61,9 +65,9 @@ public class MainMenu extends JFrame {
         buttonsPanel = createPanel(25, 200, 390, 140, new GridLayout(2, 2, 40, 15));
         add(buttonsPanel);
 
-        addGameButton("FlappyBird", "src/main/resources/flappyBirdButtonIcon.jpg");
+        addGameButton("Flappy Bird", "src/main/resources/flappyBirdButtonIcon.jpg");
         addGameButton("Snake", "src/main/resources/snakeIcon.jpg");
-        addGameButton("MineSweeper", "src/main/resources/controller.png");
+        addGameButton("Mine Sweeper", "src/main/resources/controller.png");
         addGameButton("X", "src/main/resources/controller.png");
     }
 
@@ -78,10 +82,10 @@ public class MainMenu extends JFrame {
     private void addGameButton(String name, String path) {
         JButton button = createButton(name, 0, 0, e -> openGameFrame(name));
 
-        Image scaledImage = loadIcon(path).getScaledInstance(180, 95, Image.SCALE_SMOOTH);
+        Image scaledImage = loadIcon(path).getScaledInstance(180, 70, Image.SCALE_DEFAULT);
         button.setIcon(new ImageIcon(scaledImage));
-
-        button.setFont(new Font("Serif", Font.BOLD, 18));
+        button.setForeground(new Color(30, 13, 62));
+        button.setFont(new Font("Ink Free", Font.BOLD,  24));
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.CENTER);
         buttonsPanel.add(button);
@@ -89,7 +93,7 @@ public class MainMenu extends JFrame {
 
     private JButton createButton(String text, int x, int y, java.awt.event.ActionListener actionListener) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Serif", Font.BOLD, 16));
+        button.setFont(new Font("Serif", Font.ITALIC, 16));
         button.setBounds(x, y, 100, 35);
         button.setBackground(new Color(0x0A4E8C));
         button.setFocusable(false);
@@ -99,14 +103,32 @@ public class MainMenu extends JFrame {
     }
 
     private void openGameFrame(String gameName) {
-        JFrame gameFrame = new JFrame(gameName);
-        gameFrame.setSize(300, 200);
-        gameFrame.setLocationRelativeTo(null);
-        gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        switch (gameName){
+            case "Snake":
+                Snake snake = new Snake();
+                break;
+            default:
+                JFrame gameFrame = new JFrame(gameName);
+                gameFrame.setSize(300, 200);
+                gameFrame.setLocationRelativeTo(null);
+                gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                JLabel gameLabel = createLabel("This is the " + gameName + " screen", new Font("Serif", Font.BOLD, 20), 0, 0, 300, 200);
+                gameFrame.add(gameLabel);
+                gameFrame.setVisible(true);
 
-        JLabel gameLabel = createLabel("This is the " + gameName + " screen", new Font("Serif", Font.BOLD, 20), 0, 0, 300, 200);
-        gameFrame.add(gameLabel);
-        gameFrame.setVisible(true);
+                gameFrame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        dispose();
+                        new MainMenu();
+                    }
+                });
+        }
+        dispose();
+    }
+
+    public static void main(String[] args) {
+        MainMenu mainMenu = new MainMenu();
     }
 
 }

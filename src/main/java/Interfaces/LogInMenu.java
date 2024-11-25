@@ -34,7 +34,7 @@ public class LogInMenu extends JFrame {
     }
 
     private void addTitleLabel() {
-        JLabel mainMenuLabel = createLabel("LOG IN MENU", new Font("Viner Hand ITC", Font.PLAIN, 40), 90, 40, 300, 70);
+        JLabel mainMenuLabel = createLabel("LOG IN MENU", new Font("Viner Hand ITC", Font.PLAIN, 40), 76, 40, 300, 70);
         add(mainMenuLabel);
     }
 
@@ -90,6 +90,10 @@ public class LogInMenu extends JFrame {
         button.setFocusable(false);
         button.addActionListener(actionListener);
         return button;
+    }
+
+    public static void main(String[] args) {
+        LogInMenu logInMenu = new LogInMenu();
     }
 
 }
