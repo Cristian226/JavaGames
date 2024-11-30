@@ -1,5 +1,6 @@
 package Interfaces;
 
+import Games.FlappyBird;
 import Games.Snake;
 
 import javax.swing.*;
@@ -107,6 +108,15 @@ public class MainMenu extends JFrame {
             case "Snake":
                 Snake snake = new Snake();
                 break;
+            case "Flappy Bird":
+                try {
+                    FlappyBird flappyBird = new FlappyBird();
+                    break;
+                }
+                catch (Exception e) {
+                    System.out.println("Error: " + e);
+                }
+
             default:
                 JFrame gameFrame = new JFrame(gameName);
                 gameFrame.setSize(300, 200);
@@ -124,6 +134,7 @@ public class MainMenu extends JFrame {
                     }
                 });
         }
+
         dispose();
     }
 

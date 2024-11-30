@@ -67,7 +67,6 @@ public class Snake extends JPanel implements ActionListener {
         gameWindow.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                gameWindow.dispose();
                 new MainMenu();
             }
         });
