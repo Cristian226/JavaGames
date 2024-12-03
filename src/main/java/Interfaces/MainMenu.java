@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Games.FlappyBird;
+import Games.PacMan;
 import Games.Snake;
 
 import javax.swing.*;
@@ -69,7 +70,7 @@ public class MainMenu extends JFrame {
         addGameButton("Flappy Bird", "src/main/resources/flappyBirdButtonIcon.jpg");
         addGameButton("Snake", "src/main/resources/snakeIcon.jpg");
         addGameButton("Mine Sweeper", "src/main/resources/controller.png");
-        addGameButton("X", "src/main/resources/controller.png");
+        addGameButton("PacMan", "src/main/resources/pacman.jpg");
     }
 
     private JPanel createPanel(int x, int y, int width, int height, LayoutManager layout) {
@@ -85,10 +86,11 @@ public class MainMenu extends JFrame {
 
         Image scaledImage = loadIcon(path).getScaledInstance(180, 70, Image.SCALE_DEFAULT);
         button.setIcon(new ImageIcon(scaledImage));
-        button.setForeground(new Color(30, 13, 62));
+        button.setForeground(new Color(4, 24, 103));
         button.setFont(new Font("Ink Free", Font.BOLD,  24));
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.CENTER);
+
         buttonsPanel.add(button);
     }
 
@@ -109,13 +111,13 @@ public class MainMenu extends JFrame {
                 Snake snake = new Snake();
                 break;
             case "Flappy Bird":
-                try {
-                    FlappyBird flappyBird = new FlappyBird();
-                    break;
-                }
-                catch (Exception e) {
-                    System.out.println("Error: " + e);
-                }
+                new FlappyBird();
+                break;
+
+            case "PacMan":
+                new PacMan();
+                break;
+
 
             default:
                 JFrame gameFrame = new JFrame(gameName);

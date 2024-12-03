@@ -42,16 +42,14 @@ public class FlappyBird extends JPanel implements ActionListener {
 
         loadImages();
         initializeGame();
-
-        JFrame frame = createGameFrame();
-        frame.setVisible(true);
+        createGameFrame();
     }
 
     private void loadImages() {
-        backgroundImg = new ImageIcon("src/main/resources/flappybirdbg.png").getImage();
-        birdImg = new ImageIcon("src/main/resources/flappybird.png").getImage();
-        topPipeImg = new ImageIcon("src/main/resources/toppipe.png").getImage();
-        bottomPipeImg = new ImageIcon("src/main/resources/bottompipe.png").getImage();
+        backgroundImg = new ImageIcon("src/main/resources/FlappyBirdImages/flappybirdbg.png").getImage();
+        birdImg = new ImageIcon("src/main/resources/FlappyBirdImages/flappybird.png").getImage();
+        topPipeImg = new ImageIcon("src/main/resources/FlappyBirdImages/toppipe.png").getImage();
+        bottomPipeImg = new ImageIcon("src/main/resources/FlappyBirdImages/bottompipe.png").getImage();
     }
 
     private void initializeGame() {
@@ -65,7 +63,7 @@ public class FlappyBird extends JPanel implements ActionListener {
         gameLoop = new Timer(GAME_LOOP_INTERVAL, this);
     }
 
-    private JFrame createGameFrame() {
+    private void createGameFrame() {
         JFrame frame = new JFrame("Flappy Bird");
         frame.setSize(BOARD_WIDTH, BOARD_HEIGHT);
         frame.setLocationRelativeTo(null);
@@ -79,7 +77,7 @@ public class FlappyBird extends JPanel implements ActionListener {
                 new MainMenu();
             }
         });
-        return frame;
+        frame.setVisible(true);
     }
 
     @Override
