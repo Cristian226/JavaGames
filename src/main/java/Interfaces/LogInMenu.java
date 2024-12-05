@@ -13,7 +13,7 @@ public class LogInMenu extends JFrame {
 
     private void initializeFrame() {
         setTitle("LogInMenu");
-        setIconImage(loadIcon("src/main/resources/controller.png"));
+        setIconImage(loadIcon("src/main/resources/MenuImages/controller.png"));
         setSize(450, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

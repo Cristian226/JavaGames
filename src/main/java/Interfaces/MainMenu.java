@@ -1,6 +1,7 @@
 package Interfaces;
 
 import Games.FlappyBird;
+import Games.MineSweeper;
 import Games.PacMan;
 import Games.Snake;
 
@@ -20,7 +21,7 @@ public class MainMenu extends JFrame {
 
     private void initializeFrame() {
         setTitle("MainMenu");
-        setIconImage(loadIcon("src/main/resources/controller.png"));
+        setIconImage(loadIcon("src/main/resources/MenuImages/controller.png"));
         setSize(450, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,10 +68,10 @@ public class MainMenu extends JFrame {
         buttonsPanel = createPanel(25, 200, 390, 140, new GridLayout(2, 2, 40, 15));
         add(buttonsPanel);
 
-        addGameButton("Flappy Bird", "src/main/resources/flappyBirdButtonIcon.jpg");
-        addGameButton("Snake", "src/main/resources/snakeIcon.jpg");
-        addGameButton("Mine Sweeper", "src/main/resources/controller.png");
-        addGameButton("PacMan", "src/main/resources/pacman.jpg");
+        addGameButton("Flappy Bird", "src/main/resources/MenuImages/flappyBirdButtonIcon.jpg");
+        addGameButton("Snake", "src/main/resources/MenuImages/snakeIcon.jpg");
+        addGameButton("Mine Sweeper", "src/main/resources/MenuImages/mineSweeper.png");
+        addGameButton("PacMan", "src/main/resources/MenuImages/pacman_img.png");
     }
 
     private JPanel createPanel(int x, int y, int width, int height, LayoutManager layout) {
@@ -83,11 +84,11 @@ public class MainMenu extends JFrame {
 
     private void addGameButton(String name, String path) {
         JButton button = createButton(name, 0, 0, e -> openGameFrame(name));
-
+        button.setBackground(new Color(6, 179, 253));
         Image scaledImage = loadIcon(path).getScaledInstance(180, 70, Image.SCALE_DEFAULT);
         button.setIcon(new ImageIcon(scaledImage));
         button.setForeground(new Color(4, 24, 103));
-        button.setFont(new Font("Ink Free", Font.BOLD,  24));
+        button.setFont(new Font("Ink Free", Font.BOLD,  23));
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.CENTER);
 
@@ -108,16 +109,17 @@ public class MainMenu extends JFrame {
     private void openGameFrame(String gameName) {
         switch (gameName){
             case "Snake":
-                Snake snake = new Snake();
+                new Snake();
                 break;
             case "Flappy Bird":
                 new FlappyBird();
                 break;
-
             case "PacMan":
                 new PacMan();
                 break;
-
+            case "Mine Sweeper":
+                new MineSweeper();
+                break;
 
             default:
                 JFrame gameFrame = new JFrame(gameName);
