@@ -72,9 +72,24 @@ public class MineSweeper {
     }
 
     private void initializeBoardPanel() {
+        boardPanel = new JPanel() {
+            private Image backgroundImage = new ImageIcon("src/main/resources/MenuImages/mineSweeper.png").getImage();
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+
+                // Draw background image
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+
+                // add a gray transparent colour on top
+                g2d.setColor(new Color(0, 0, 0, 200));
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
         boardPanel.setLayout(new GridLayout(NUM_ROWS, NUM_COLS));
         frame.add(boardPanel);
-
     }
 
     private void placeTiles() {
@@ -110,9 +125,11 @@ public class MineSweeper {
     private void handleRightClick(MineTile tile) {
         if (tile.getText().isEmpty() && tile.isEnabled()) {
             tile.setText(FLAG_SYMBOL);
+            tile.setForeground(Color.RED);
             mineCount--;
         } else if (FLAG_SYMBOL.equals(tile.getText())) {
             tile.setText("");
+            tile.setForeground(Color.BLACK);
             mineCount++;
         }
     }
@@ -144,14 +161,36 @@ public class MineSweeper {
         if (r < 0 || r >= NUM_ROWS || c < 0 || c >= NUM_COLS) return;
 
         MineTile tile = board[r][c];
-        if (!tile.isEnabled()) return;
+        if (!tile.isOpaque()) return;
 
-        tile.setEnabled(false);
+        tile.setOpaque(false);
+        tile.setContentAreaFilled(false);
+
         tilesClicked++;
 
         int minesFound = countAdjacentMines(r, c);
         if (minesFound > 0) {
+            switch (minesFound) {
+                case 1:
+                    tile.setForeground(Color.blue);
+                    break;
+                case 2:
+                    tile.setForeground(Color.green);
+                    break;
+                case 3:
+                    tile.setForeground(Color.red);
+                    break;
+                case 4:
+                    tile.setForeground(new Color(0x00008B));
+                    break;
+                default:
+                    tile.setForeground(Color.orange);
+                    break;
+
+            }
+
             tile.setText(String.valueOf(minesFound));
+
         } else {
             tile.setText("");
             revealAdjacentTiles(r, c);
@@ -210,13 +249,16 @@ public class MineSweeper {
             for (int c = 0; c < NUM_COLS; c++) {
                 MineTile tile = board[r][c];
                 tile.setText("");
-                tile.setEnabled(true);
+                tile.setOpaque(true);
+                tile.setForeground(Color.black);
+                tile.setContentAreaFilled(true);
             }
         }
+
         mineList.clear();
+        mineCount = 10;
         setMines();
         tilesClicked = 0;
-        mineCount = 10;
         gameOver = false;
         gameStarted = false;
         textLabel.setText("Mines: " + mineCount);
@@ -255,6 +297,24 @@ public class MineSweeper {
         public MineTile(int r, int c) {
             this.r = r;
             this.c = c;
+            setOpaque(true);
+            setBackground(Color.white);
+            setForeground(Color.black);
+
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            // Custom background for the disabled state
+            if (!isEnabled()) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setColor(Color.black); // Example gray background for disabled tiles
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+
+            // Foreground is automatically handled by JButton
         }
     }
 

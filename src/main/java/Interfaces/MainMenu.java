@@ -71,7 +71,7 @@ public class MainMenu extends JFrame {
 
         addGameButton("Flappy Bird", "src/main/resources/MenuImages/flappyBirdButtonIcon.jpg");
         addGameButton("Snake", "src/main/resources/MenuImages/snakeIcon.jpg");
-        addGameButton("Mine Sweeper", "src/main/resources/MenuImages/mineSweeper.png");
+        addGameButton("Mine Sweeper", "src/main/resources/MenuImages/mineSweeperAirView.jpg");
         addGameButton("PacMan", "src/main/resources/MenuImages/pacman_img.png");
     }
 
