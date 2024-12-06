@@ -83,7 +83,7 @@ public class LogInMenu extends JFrame {
 
     private JButton createButton(String text, int x, int y, java.awt.event.ActionListener actionListener) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Serif", Font.BOLD, 16));
+        button.setFont(new Font("Viner Hand ITC", Font.PLAIN, 16));
         button.setBounds(x, y, 100, 35);
         button.setBackground(new Color(0x0A4E8C));
         button.setForeground(Color.BLACK);

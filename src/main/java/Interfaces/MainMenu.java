@@ -4,14 +4,14 @@ import Games.FlappyBird;
 import Games.MineSweeper;
 import Games.PacMan;
 import Games.Snake;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class MainMenu extends JFrame {
     private JPanel buttonsPanel;
+    private JPanel statsPanel;
+    private String currentUser = "TestUser";
+    private int currentUserID = 0;
 
     public MainMenu() {
         initializeFrame();
@@ -34,6 +34,7 @@ public class MainMenu extends JFrame {
         addTitleLabel();
         addNavigationButtons();
         addGameButtons();
+        addStatsPanel();
     }
 
     private Image loadIcon(String path) {
@@ -97,7 +98,8 @@ public class MainMenu extends JFrame {
 
     private JButton createButton(String text, int x, int y, java.awt.event.ActionListener actionListener) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Serif", Font.ITALIC, 16));
+        button.setFont(new Font("Viner Hand ITC", Font.PLAIN, 16));
+        button.setVerticalTextPosition(SwingConstants.CENTER);
         button.setBounds(x, y, 100, 35);
         button.setBackground(new Color(0x0A4E8C));
         button.setFocusable(false);
@@ -110,36 +112,75 @@ public class MainMenu extends JFrame {
         switch (gameName){
             case "Snake":
                 new Snake();
+                dispose();
                 break;
             case "Flappy Bird":
                 new FlappyBird();
+                dispose();
                 break;
             case "PacMan":
                 new PacMan();
+                dispose();
                 break;
             case "Mine Sweeper":
                 new MineSweeper();
+                dispose();
+                break;
+            case "Stats":
+                // hide this frame's components
+                swapViewToMainMenu(true);
+                statsPanel.setVisible(true);
                 break;
 
-            default:
-                JFrame gameFrame = new JFrame(gameName);
-                gameFrame.setSize(300, 200);
-                gameFrame.setLocationRelativeTo(null);
-                gameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                JLabel gameLabel = createLabel("This is the " + gameName + " screen", new Font("Serif", Font.BOLD, 20), 0, 0, 300, 200);
-                gameFrame.add(gameLabel);
-                gameFrame.setVisible(true);
-
-                gameFrame.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        dispose();
-                        new MainMenu();
-                    }
-                });
         }
 
-        dispose();
+    }
+
+    private void swapViewToMainMenu(boolean value) {
+        for (Component component : getContentPane().getComponents()) {
+            component.setVisible(!value);
+        }
+        for(Component component: statsPanel.getComponents()){
+            component.setVisible(value);
+        }
+    }
+
+    private void addStatsPanel() {
+        statsPanel = createPanel(0, 0, 450, 400, null);
+        statsPanel.setBounds(0,0,450,400);
+        statsPanel.setLayout(null);
+        statsPanel.setBackground(new Color(123, 50, 250));
+        statsPanel.setVisible(false);
+        
+        JLabel statsLabel = createLabel("HIGHSCORES - " + currentUser, new Font("Viner Hand ITC", Font.BOLD, 27),
+                0, 10, 450, 50);
+        JLabel flappyBirdHighScore = createLabel("Flappy Bird: ", new Font("Viner Hand ITC", Font.BOLD, 20),
+                20, 100, 400, 50);
+        JLabel snakeHighScore = createLabel("Snake: ", new Font("Viner Hand ITC", Font.BOLD, 20),
+                20, 150, 400, 50);
+        JLabel pacManHighScore = createLabel("PacMan: ", new Font("Viner Hand ITC", Font.BOLD, 20),
+                20, 200, 400, 50);
+        JLabel mineSweeperHighScore = createLabel("Mine: ", new Font("Viner Hand ITC", Font.BOLD, 20)
+                , 20, 250, 400, 50);
+        JButton backButton = createButton("Back", 175, 320, e -> {
+            statsPanel.setVisible(false);
+            swapViewToMainMenu(false);
+        });
+
+        statsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        flappyBirdHighScore.setHorizontalAlignment(SwingConstants.LEFT);
+        snakeHighScore.setHorizontalAlignment(SwingConstants.LEFT);
+        pacManHighScore.setHorizontalAlignment(SwingConstants.LEFT);
+        mineSweeperHighScore.setHorizontalAlignment(SwingConstants.LEFT);
+
+        statsPanel.add(statsLabel);
+        statsPanel.add(flappyBirdHighScore);
+        statsPanel.add(snakeHighScore);
+        statsPanel.add(pacManHighScore);
+        statsPanel.add(mineSweeperHighScore);
+        statsPanel.add(backButton);
+
+        add(statsPanel);
     }
 
     public static void main(String[] args) {
