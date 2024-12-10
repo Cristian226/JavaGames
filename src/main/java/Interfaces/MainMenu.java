@@ -4,14 +4,15 @@ import Games.FlappyBird;
 import Games.MineSweeper;
 import Games.PacMan;
 import Games.Snake;
+import org.example.App;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainMenu extends JFrame {
     private JPanel buttonsPanel;
     private JPanel statsPanel;
-    private String currentUser = "TestUser";
-    private int currentUserID = 0;
+
 
     public MainMenu() {
         initializeFrame();
@@ -152,7 +153,7 @@ public class MainMenu extends JFrame {
         statsPanel.setBackground(new Color(123, 50, 250));
         statsPanel.setVisible(false);
         
-        JLabel statsLabel = createLabel("HIGHSCORES - " + currentUser, new Font("Viner Hand ITC", Font.BOLD, 27),
+        JLabel statsLabel = createLabel("HIGHSCORES - " + App.getUsername(), new Font("Viner Hand ITC", Font.BOLD, 27),
                 0, 10, 450, 50);
         JLabel flappyBirdHighScore = createLabel("Flappy Bird: ", new Font("Viner Hand ITC", Font.BOLD, 20),
                 20, 100, 400, 50);
@@ -182,6 +183,8 @@ public class MainMenu extends JFrame {
 
         add(statsPanel);
     }
+
+
 
     public static void main(String[] args) {
         MainMenu mainMenu = new MainMenu();

@@ -2,8 +2,13 @@ package Interfaces;
 
 import javax.swing.*;
 import java.awt.*;
+import DataBase.JDBC;
+import org.example.App;
 
 public class LogInMenu extends JFrame {
+    JTextField username;
+    JPasswordField password;
+    JLabel errorLabel;
 
     public LogInMenu() {
         initializeFrame();
@@ -31,6 +36,7 @@ public class LogInMenu extends JFrame {
         addUsernameField();
         addPasswordField();
         addLogInButton();
+        addErrorLabel();
     }
 
     private void addTitleLabel() {
@@ -46,13 +52,19 @@ public class LogInMenu extends JFrame {
     }
 
     private void addUsernameField() {
-        JTextField username = createTextField(125, 150, 200, 25);
+        username = createTextField(125, 150, 200, 25);
         add(username);
     }
 
     private void addPasswordField() {
-        JPasswordField password = createPasswordField(125, 200, 200, 25);
+        password = createPasswordField(125, 200, 200, 25);
         add(password);
+    }
+
+    private void addErrorLabel(){
+        errorLabel = createLabel(" ", new Font("Viner Hand ITC", Font.PLAIN, 18), 0, 320, 450, 25);
+        errorLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+        add(errorLabel);
     }
 
     private JTextField createTextField(int x, int y, int width, int height) {
@@ -75,10 +87,36 @@ public class LogInMenu extends JFrame {
 
     private void addLogInButton() {
         JButton logIn = createButton("Log in", 175, 260, e -> {
-            new MainMenu();
-            dispose();
+            logIn();
         });
         add(logIn);
+    }
+
+    private void logIn() {
+        String username = this.username.getText();
+        String password = String.valueOf(this.password.getPassword());
+
+
+        if(!JDBC.CheckUser(username, password)){
+
+            if(JDBC.AddUser(username, password) == null){
+                errorLabel.setText("User created. Press Log in again to proceed");
+                repaint();
+                return;
+            }
+            else {
+                errorLabel.setText("Wrong password");
+                repaint();
+                return;
+            }
+
+        }
+
+        App.setUsername(username);
+        App.setUserID(JDBC.GetUserId(username));
+        new MainMenu();
+        dispose();
+
     }
 
     private JButton createButton(String text, int x, int y, java.awt.event.ActionListener actionListener) {
