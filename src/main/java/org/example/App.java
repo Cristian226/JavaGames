@@ -6,8 +6,8 @@ import Interfaces.MainMenu;
 
 public class App 
 {
-    private static String currentUser;
-    private static int currentUserID = 0;
+    private static String currentUser = "defaultuser";
+    private static int currentUserID = 89;
 
 
     public static void setUsername(String username){
@@ -20,6 +20,10 @@ public class App
 
     public static String getUsername(){
         return currentUser;
+    }
+
+    public static int getUserID(){
+        return currentUserID;
     }
 
     public static void main( String[] args )

@@ -96,7 +96,6 @@ public class LogInMenu extends JFrame {
         String username = this.username.getText();
         String password = String.valueOf(this.password.getPassword());
 
-
         if(!JDBC.CheckUser(username, password)){
 
             if(JDBC.AddUser(username, password) == null){

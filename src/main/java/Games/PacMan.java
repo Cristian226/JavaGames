@@ -1,6 +1,8 @@
 package Games;
 
+import DataBase.JDBC;
 import Interfaces.MainMenu;
+import org.example.App;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +55,7 @@ public class PacMan extends JPanel implements ActionListener {
     private int lives = 3;
     private boolean gameOver = false;
     private boolean ghostsAreScared = false;
+    private boolean scoreSaved = false;
 
     private final char[] directions = {'U', 'D', 'L', 'R'};
     private final Random random = new Random();
@@ -163,6 +166,7 @@ public class PacMan extends JPanel implements ActionListener {
         drawFoods(g);
 
         if(gameOver) {
+            savePacManScore();
             drawDeathScreen(g);
         }
         else drawScore(g);
@@ -376,8 +380,16 @@ public class PacMan extends JPanel implements ActionListener {
             lives = 3;
             score = 0;
             gameOver = false;
+            scoreSaved = false;
             ghostsAreScared = false;
             gameLoop.start();
+        }
+    }
+
+    private void savePacManScore(){
+        if(!scoreSaved){
+            scoreSaved = true;
+            JDBC.CheckAndSetHighScore(App.getUserID(),"pacman", (int) score);
         }
     }
 

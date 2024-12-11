@@ -4,7 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
+
+import DataBase.JDBC;
 import Interfaces.MainMenu;
+import org.example.App;
 
 public class FlappyBird extends JPanel implements ActionListener {
     private static final int BOARD_WIDTH = 360;
@@ -33,6 +36,7 @@ public class FlappyBird extends JPanel implements ActionListener {
     private boolean gameOver;
     private double score;
     private boolean gameStarted;
+    private boolean scoreSaved;
     StringBuilder cheatCodeBuffer = new StringBuilder();  // Buffer for cheat code :)
 
     public FlappyBird() {
@@ -58,6 +62,7 @@ public class FlappyBird extends JPanel implements ActionListener {
         gameOver = false;
         score = 0;
         gameStarted = false;
+        scoreSaved = false;
 
         placePipeTimer = new Timer(PIPE_INTERVAL, e -> placePipes());
         gameLoop = new Timer(GAME_LOOP_INTERVAL, this);
@@ -86,6 +91,7 @@ public class FlappyBird extends JPanel implements ActionListener {
             move();
             repaint();
             if (gameOver) {
+                saveFlappyBirdScore();
                 gameOverAnimation();
             }
         }
@@ -208,10 +214,18 @@ public class FlappyBird extends JPanel implements ActionListener {
 
         gameOver = false;
         gameStarted = false;
+        scoreSaved = false;
         score = 0;
         pipes.clear();
 
         repaint();
+    }
+
+    private void saveFlappyBirdScore() {
+        if(!scoreSaved){
+            scoreSaved = true;
+            JDBC.CheckAndSetHighScore(App.getUserID(), "flappybird", (int) score);
+        }
     }
 
     private class MyKeyAdapter extends KeyAdapter {

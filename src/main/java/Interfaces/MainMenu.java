@@ -1,5 +1,6 @@
 package Interfaces;
 
+import DataBase.JDBC;
 import Games.FlappyBird;
 import Games.MineSweeper;
 import Games.PacMan;
@@ -155,13 +156,17 @@ public class MainMenu extends JFrame {
         
         JLabel statsLabel = createLabel("HIGHSCORES - " + App.getUsername(), new Font("Viner Hand ITC", Font.BOLD, 27),
                 0, 10, 450, 50);
-        JLabel flappyBirdHighScore = createLabel("Flappy Bird: ", new Font("Viner Hand ITC", Font.BOLD, 20),
+        JLabel flappyBirdHighScore = createLabel("Flappy Bird: " + JDBC.GetHighScore(App.getUserID(),
+                        "flappybird"), new Font("Viner Hand ITC", Font.BOLD, 20),
                 20, 100, 400, 50);
-        JLabel snakeHighScore = createLabel("Snake: ", new Font("Viner Hand ITC", Font.BOLD, 20),
+        JLabel snakeHighScore = createLabel("Snake: " + JDBC.GetHighScore(App.getUserID(),
+                        "snake"), new Font("Viner Hand ITC", Font.BOLD, 20),
                 20, 150, 400, 50);
-        JLabel pacManHighScore = createLabel("PacMan: ", new Font("Viner Hand ITC", Font.BOLD, 20),
+        JLabel pacManHighScore = createLabel("PacMan: " + JDBC.GetHighScore(App.getUserID(),
+                        "pacman"), new Font("Viner Hand ITC", Font.BOLD, 20),
                 20, 200, 400, 50);
-        JLabel mineSweeperHighScore = createLabel("Mine: ", new Font("Viner Hand ITC", Font.BOLD, 20)
+        JLabel mineSweeperHighScore = createLabel("MineSweeper: " + JDBC.GetHighScore(App.getUserID(),
+                        "minesweeper"), new Font("Viner Hand ITC", Font.BOLD, 20)
                 , 20, 250, 400, 50);
         JButton backButton = createButton("Back", 175, 320, e -> {
             statsPanel.setVisible(false);

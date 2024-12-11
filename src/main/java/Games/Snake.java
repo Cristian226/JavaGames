@@ -1,5 +1,9 @@
 package Games;
 
+import DataBase.JDBC;
+import Interfaces.MainMenu;
+import org.example.App;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -20,7 +24,8 @@ public class Snake extends JPanel implements ActionListener {
 
     private int velocityX = 1, velocityY = 0;
     private final Timer gameLoop;
-    private boolean gameOver = false;
+    private boolean gameOver;
+    private boolean scoreSaved;
 
     public Snake() {
         // Set up JFrame
@@ -36,6 +41,12 @@ public class Snake extends JPanel implements ActionListener {
         setFocusable(true);
         this.setFocusable(true);
         addKeyListener(new SnakeKeyAdapter());
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                new MainMenu();
+            }
+        });
         frame.add(this);
         frame.pack();
         frame.setVisible(true);
@@ -45,6 +56,8 @@ public class Snake extends JPanel implements ActionListener {
         snakeBody = new ArrayList<>();
         food = new Tile(10, 10);
         random = new Random();
+        scoreSaved = false;
+        gameOver = false;
         placeFood();
 
         // Start game loop
@@ -83,6 +96,7 @@ public class Snake extends JPanel implements ActionListener {
             g.drawString("Score: " + snakeBody.size(), TILE_SIZE, TILE_SIZE);
         }
         else{
+            saveSnakeScore();
             drawDeathScreen(g);
         }
 
@@ -143,8 +157,16 @@ public class Snake extends JPanel implements ActionListener {
         velocityX = 1;
         velocityY = 0;
         gameOver = false;
+        scoreSaved = false;
         gameLoop.start();
         placeFood();
+    }
+
+    private void saveSnakeScore(){
+        if(!scoreSaved){
+            scoreSaved = true;
+            JDBC.CheckAndSetHighScore(App.getUserID(),"snake", snakeBody.size());
+        }
     }
 
     @Override

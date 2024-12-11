@@ -1,6 +1,8 @@
 package Games;
 
+import DataBase.JDBC;
 import Interfaces.MainMenu;
+import org.example.App;
 
 import javax.swing.*;
 import java.awt.*;
@@ -197,6 +199,7 @@ public class MineSweeper {
         }
 
         if (tilesClicked == NUM_ROWS * NUM_COLS - mineList.size()) {
+            saveMineSweeperScore();
             gameOver = true;
             timer.cancel();
             addRestartButton();
@@ -263,6 +266,10 @@ public class MineSweeper {
         gameStarted = false;
         textLabel.setText("Mines: " + mineCount);
         timer.cancel();
+    }
+
+    private void saveMineSweeperScore(){
+        JDBC.CheckAndSetHighScore(App.getUserID(), "minesweeper", (int)((System.currentTimeMillis() - startTime) / 1000));
     }
 
     private class MyMouseAdapter extends MouseAdapter {
