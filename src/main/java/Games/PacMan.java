@@ -1,13 +1,12 @@
 package Games;
 
 import DataBase.JDBC;
-import Interfaces.MainMenu;
-import org.example.App;
+import Menus.MainMenu;
+import App.App;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 

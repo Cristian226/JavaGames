@@ -1,7 +1,6 @@
-package org.example;
+package App;
 
-import Interfaces.LogInMenu;
-import Interfaces.MainMenu;
+import Menus.LogInMenu;
 
 
 public class App 
@@ -25,6 +24,7 @@ public class App
     public static int getUserID(){
         return currentUserID;
     }
+
 
     public static void main( String[] args )
     {

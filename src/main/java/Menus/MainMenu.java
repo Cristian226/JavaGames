@@ -1,11 +1,11 @@
-package Interfaces;
+package Menus;
 
 import DataBase.JDBC;
 import Games.FlappyBird;
 import Games.MineSweeper;
 import Games.PacMan;
 import Games.Snake;
-import org.example.App;
+import App.App;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +27,7 @@ public class MainMenu extends JFrame {
         setSize(450, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(123, 50, 250));
+        getContentPane().setBackground(new Color(30, 203, 225));
         setLayout(null);
         setResizable(false);
     }
@@ -44,8 +44,9 @@ public class MainMenu extends JFrame {
     }
 
     private void addTitleLabel() {
-        JLabel mainMenuLabel = createLabel("MAIN MENU", new Font("Viner Hand ITC", Font.PLAIN, 40),
+        JLabel mainMenuLabel = createLabel("MAIN MENU", new Font("Arial", Font.BOLD, 45),
                 75, 80, 300, 70);
+        mainMenuLabel.setForeground(Color.BLACK);
         add(mainMenuLabel);
     }
 
@@ -57,10 +58,10 @@ public class MainMenu extends JFrame {
     }
 
     private void addNavigationButtons() {
-        JButton statsButton = createButton("Stats", 10, 10, e -> openGameFrame("Stats"));
+        JButton statsButton = createButton("STATS", 10, 10, e -> openGameFrame("Stats"));
         add(statsButton);
 
-        JButton logOutButton = createButton("Log out", 325, 10, e -> {
+        JButton logOutButton = createButton("LOG OUT", 315, 10, e -> {
             new LogInMenu();
             dispose();
         });
@@ -77,21 +78,13 @@ public class MainMenu extends JFrame {
         addGameButton("PacMan", "src/main/resources/MenuImages/pacman_img.png");
     }
 
-    private JPanel createPanel(int x, int y, int width, int height, LayoutManager layout) {
-        JPanel panel = new JPanel();
-        panel.setBounds(x, y, width, height);
-        panel.setBackground(new Color(123, 50, 250));
-        panel.setLayout(layout);
-        return panel;
-    }
-
     private void addGameButton(String name, String path) {
         JButton button = createButton(name, 0, 0, e -> openGameFrame(name));
         button.setBackground(new Color(6, 179, 253));
         Image scaledImage = loadIcon(path).getScaledInstance(180, 70, Image.SCALE_DEFAULT);
         button.setIcon(new ImageIcon(scaledImage));
-        button.setForeground(new Color(4, 24, 103));
-        button.setFont(new Font("Ink Free", Font.BOLD,  23));
+        button.setForeground(Color.BLACK);
+        button.setFont(new Font("Arial", Font.PLAIN,  22));
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.CENTER);
 
@@ -100,12 +93,12 @@ public class MainMenu extends JFrame {
 
     private JButton createButton(String text, int x, int y, java.awt.event.ActionListener actionListener) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Viner Hand ITC", Font.PLAIN, 16));
+        button.setFont(new Font("Arial", Font.PLAIN, 16));
         button.setVerticalTextPosition(SwingConstants.CENTER);
-        button.setBounds(x, y, 100, 35);
-        button.setBackground(new Color(0x0A4E8C));
+        button.setBounds(x, y, 110, 35);
+        button.setBackground(new Color(0x5310EF));
+        button.setForeground(new Color(0x000000));
         button.setFocusable(false);
-        button.setForeground(Color.BLACK);
         button.addActionListener(actionListener);
         return button;
     }
@@ -151,24 +144,30 @@ public class MainMenu extends JFrame {
         statsPanel = createPanel(0, 0, 450, 400, null);
         statsPanel.setBounds(0,0,450,400);
         statsPanel.setLayout(null);
-        statsPanel.setBackground(new Color(123, 50, 250));
+        statsPanel.setBackground(new Color(30, 203, 225));
         statsPanel.setVisible(false);
         
-        JLabel statsLabel = createLabel("HIGHSCORES - " + App.getUsername(), new Font("Viner Hand ITC", Font.BOLD, 27),
-                0, 10, 450, 50);
-        JLabel flappyBirdHighScore = createLabel("Flappy Bird: " + JDBC.GetHighScore(App.getUserID(),
-                        "flappybird"), new Font("Viner Hand ITC", Font.BOLD, 20),
+        JLabel statsLabel = createLabel("HIGHSCORES " + App.getUsername(), new Font("Arial", Font.BOLD, 30),
+                0, 10, 450, 55);
+        statsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        statsLabel.setForeground(new Color(0xAA1401));
+        JLabel flappyBirdHighScore = createLabel("Flappy Bird: " + JDBC.GetHighScore(App.getUserID(), "flappybird") + " points",
+                new Font("Arial", Font.BOLD, 23),
                 20, 100, 400, 50);
-        JLabel snakeHighScore = createLabel("Snake: " + JDBC.GetHighScore(App.getUserID(),
-                        "snake"), new Font("Viner Hand ITC", Font.BOLD, 20),
+
+        JLabel snakeHighScore = createLabel("Snake: " + JDBC.GetHighScore(App.getUserID(), "snake") + " points",
+                new Font("Arial", Font.BOLD, 23),
                 20, 150, 400, 50);
-        JLabel pacManHighScore = createLabel("PacMan: " + JDBC.GetHighScore(App.getUserID(),
-                        "pacman"), new Font("Viner Hand ITC", Font.BOLD, 20),
+
+        JLabel pacManHighScore = createLabel("PacMan: " + JDBC.GetHighScore(App.getUserID(), "pacman") + " points",
+                new Font("Arial", Font.BOLD, 23),
                 20, 200, 400, 50);
-        JLabel mineSweeperHighScore = createLabel("MineSweeper: " + JDBC.GetHighScore(App.getUserID(),
-                        "minesweeper"), new Font("Viner Hand ITC", Font.BOLD, 20)
+
+        JLabel mineSweeperHighScore = createLabel("MineSweeper: " + JDBC.GetHighScore(App.getUserID(), "minesweeper") + " seconds",
+                new Font("Arial", Font.BOLD, 23)
                 , 20, 250, 400, 50);
-        JButton backButton = createButton("Back", 175, 320, e -> {
+
+        JButton backButton = createButton("BACK", 170, 320, e -> {
             statsPanel.setVisible(false);
             swapViewToMainMenu(false);
         });
@@ -189,7 +188,13 @@ public class MainMenu extends JFrame {
         add(statsPanel);
     }
 
-
+    private JPanel createPanel(int x, int y, int width, int height, LayoutManager layout) {
+        JPanel panel = new JPanel();
+        panel.setBounds(x, y, width, height);
+        panel.setBackground(new Color(30, 203, 225));
+        panel.setLayout(layout);
+        return panel;
+    }
 
     public static void main(String[] args) {
         MainMenu mainMenu = new MainMenu();

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import DataBase.JDBC;
-import Interfaces.MainMenu;
-import org.example.App;
+import Menus.MainMenu;
+import App.App;
 
 public class FlappyBird extends JPanel implements ActionListener {
     private static final int BOARD_WIDTH = 360;

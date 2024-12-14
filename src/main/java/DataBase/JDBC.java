@@ -34,6 +34,12 @@ public class JDBC {
         return null;
     }
 
+    /**
+     * Checks if the user exists in the database
+     * @param username
+     * @param password
+     * @return true if the user exists, false otherwise
+     */
     public static boolean CheckUser(String username, String password) {
         Connection connection = getConnection();
         try {
