@@ -106,18 +106,22 @@ public class MainMenu extends JFrame {
     private void openGameFrame(String gameName) {
         switch (gameName){
             case "Snake":
+                JDBC.addUserActivity(App.snakeID, "Started Snake");
                 new Snake();
                 dispose();
                 break;
             case "Flappy Bird":
+                JDBC.addUserActivity(App.flappyBirdID, "Started FlappyBird");
                 new FlappyBird();
                 dispose();
                 break;
             case "PacMan":
+                JDBC.addUserActivity(App.pacManID, "Started PacMan");
                 new PacMan();
                 dispose();
                 break;
             case "Mine Sweeper":
+                JDBC.addUserActivity(App.mineSweeperID, "Started MineSweeper");
                 new MineSweeper();
                 dispose();
                 break;
@@ -146,7 +150,7 @@ public class MainMenu extends JFrame {
         statsPanel.setLayout(null);
         statsPanel.setBackground(new Color(30, 203, 225));
         statsPanel.setVisible(false);
-        
+
         JLabel statsLabel = createLabel("HIGHSCORES " + App.getUsername(), new Font("Arial", Font.BOLD, 30),
                 0, 10, 450, 55);
         statsLabel.setHorizontalAlignment(SwingConstants.CENTER);

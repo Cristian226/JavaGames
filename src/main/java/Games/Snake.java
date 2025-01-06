@@ -44,6 +44,7 @@ public class Snake extends JPanel implements ActionListener {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                JDBC.addUserActivity(App.snakeID, "Closed Snake");
                 new MainMenu();
             }
         });
@@ -165,7 +166,7 @@ public class Snake extends JPanel implements ActionListener {
     private void saveSnakeScore(){
         if(!scoreSaved){
             scoreSaved = true;
-            JDBC.CheckAndSetHighScore(App.getUserID(),"snake", snakeBody.size());
+            JDBC.CheckAndSetHighScore(App.getUserID(),"snake", App.snakeID, snakeBody.size());
         }
     }
 

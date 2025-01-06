@@ -57,6 +57,7 @@ public class MineSweeper {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                JDBC.addUserActivity(App.mineSweeperID, "Closed Mine Sweeper");
                 new MainMenu();
             }
         });
@@ -269,7 +270,7 @@ public class MineSweeper {
     }
 
     private void saveMineSweeperScore(){
-        JDBC.CheckAndSetHighScore(App.getUserID(), "minesweeper", (int)((System.currentTimeMillis() - startTime) / 1000));
+        JDBC.CheckAndSetHighScore(App.getUserID(), "minesweeper", App.mineSweeperID, (int)((System.currentTimeMillis() - startTime) / 1000));
     }
 
     private class MyMouseAdapter extends MouseAdapter {

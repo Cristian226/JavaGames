@@ -1,7 +1,10 @@
 package DataBase;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import App.App;
 
 public class JDBC {
 
@@ -89,7 +92,7 @@ public class JDBC {
     }
 }
 
-public static String SetHighScore(int id, String game, int highscore) {
+    public static String SetHighScore(int id, String game, int highscore) {
     Connection connection = getConnection();
     try {
         String query = "UPDATE highscore_table SET " + game + " = ? WHERE id_highscore_table = ?";
@@ -104,9 +107,10 @@ public static String SetHighScore(int id, String game, int highscore) {
     return null;
 }
 
-    public static void CheckAndSetHighScore(int id, String game, int highscore) {
+    public static void CheckAndSetHighScore(int id, String game, int gameID, int highscore) {
         String score = GetHighScore(id, game);
         if(Objects.equals(score, "No high score found")) {
+            addUserActivity(gameID, "First highscore");
             SetHighScore(id, game, highscore);
             return;
         }
@@ -115,14 +119,33 @@ public static String SetHighScore(int id, String game, int highscore) {
         if (Objects.equals(game, "minesweeper")) {
             if (highscore < currentHighScore) {
                 SetHighScore(id, game, highscore);
+                addUserActivity(gameID, "New highscore");
             }
         } else {
             if (highscore > currentHighScore) {
                 SetHighScore(id, game, highscore);
+                addUserActivity(gameID, "New highscore");
             }
         }
     }
 
+    public static String addUserActivity(int idGame, String action) {
+        Connection connection = getConnection();
+        String currentTimestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        String query = "INSERT INTO user_activities_table (id_user, id_game, activity_time, action) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, App.getUserID());
+            preparedStatement.setInt(2, idGame);
+            preparedStatement.setString(3, currentTimestamp);
+            preparedStatement.setString(4, action);
+            preparedStatement.executeUpdate();
+            return "Activity added successfully.";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Error adding activity: " + e.getMessage();
+        }
+    }
 
     public static void main(String[] args) {
         try {

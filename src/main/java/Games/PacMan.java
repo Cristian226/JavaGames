@@ -145,6 +145,7 @@ public class PacMan extends JPanel implements ActionListener {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                JDBC.addUserActivity(App.pacManID, "Closed Pac Man");
                 new MainMenu();
             }
         });
@@ -388,7 +389,7 @@ public class PacMan extends JPanel implements ActionListener {
     private void savePacManScore(){
         if(!scoreSaved){
             scoreSaved = true;
-            JDBC.CheckAndSetHighScore(App.getUserID(),"pacman", (int) score);
+            JDBC.CheckAndSetHighScore(App.getUserID(),"pacman", App.pacManID, (int) score);
         }
     }
 

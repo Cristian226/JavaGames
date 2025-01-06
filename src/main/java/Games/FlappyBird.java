@@ -79,6 +79,7 @@ public class FlappyBird extends JPanel implements ActionListener {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                JDBC.addUserActivity(App.flappyBirdID, "Closed Flappy Bird");
                 new MainMenu();
             }
         });
@@ -224,7 +225,7 @@ public class FlappyBird extends JPanel implements ActionListener {
     private void saveFlappyBirdScore() {
         if(!scoreSaved){
             scoreSaved = true;
-            JDBC.CheckAndSetHighScore(App.getUserID(), "flappybird", (int) score);
+            JDBC.CheckAndSetHighScore(App.getUserID(), "flappybird", App.flappyBirdID, (int) score);
         }
     }
 
