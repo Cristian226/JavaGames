@@ -9,10 +9,12 @@ import App.App;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MainMenu extends JFrame {
     private JPanel buttonsPanel;
     private JPanel statsPanel;
+    private JPanel leaderboardPanel;
 
 
     public MainMenu() {
@@ -37,6 +39,7 @@ public class MainMenu extends JFrame {
         addNavigationButtons();
         addGameButtons();
         addStatsPanel();
+        addLeaderboardPanel();
     }
 
     private Image loadIcon(String path) {
@@ -60,6 +63,9 @@ public class MainMenu extends JFrame {
     private void addNavigationButtons() {
         JButton statsButton = createButton("STATS", 10, 10, e -> openGameFrame("Stats"));
         add(statsButton);
+
+        JButton leaderBoard = createButton("LEADERS", 165, 10, e -> openGameFrame("Leaderboard"));
+        add(leaderBoard);
 
         JButton logOutButton = createButton("LOG OUT", 315, 10, e -> {
             new LogInMenu();
@@ -130,6 +136,11 @@ public class MainMenu extends JFrame {
                 swapViewToMainMenu(true);
                 statsPanel.setVisible(true);
                 break;
+            case "Leaderboard":
+                // hide this frame's components
+                swapViewToMainMenu(true);
+                leaderboardPanel.setVisible(true);
+                break;
 
         }
 
@@ -140,6 +151,9 @@ public class MainMenu extends JFrame {
             component.setVisible(!value);
         }
         for(Component component: statsPanel.getComponents()){
+            component.setVisible(value);
+        }
+        for(Component component: leaderboardPanel.getComponents()){
             component.setVisible(value);
         }
     }
@@ -191,6 +205,83 @@ public class MainMenu extends JFrame {
 
         add(statsPanel);
     }
+
+    private void addLeaderboardPanel() {
+        leaderboardPanel = createPanel(0, 0, 450, 400, null);
+        leaderboardPanel.setBounds(0, 0, 450, 400);
+        leaderboardPanel.setLayout(null);
+        leaderboardPanel.setBackground(new Color(30, 203, 225));
+        leaderboardPanel.setVisible(false);
+
+        JLabel leaderboardLabel = createLabel("LEADERBOARD", new Font("Arial", Font.BOLD, 30),
+                0, 8, 450, 55);
+        leaderboardLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        leaderboardLabel.setForeground(new Color(0xAA1401));
+
+        ArrayList<String> leaderboardEntries = JDBC.getLeaderboardData();
+        int yPositionLeft = 80;
+        int yPositionRight = 80;
+        int xPositionLeft = 10;
+        int xPositionRight = 240;
+        int gameCounter = 0;
+
+        for (String entry : leaderboardEntries) {
+            JLabel entryLabel;
+            if(gameCounter == 0){
+                entryLabel = createLabel("  Flappy Bird", new Font("Arial", Font.BOLD, 21),
+                        xPositionLeft, yPositionLeft, 200, 25);
+                yPositionLeft += 30;
+                entryLabel.setHorizontalAlignment(SwingConstants.LEFT);
+                leaderboardPanel.add(entryLabel);
+            }
+            if(gameCounter == 3){
+                yPositionLeft += 30;
+                entryLabel = createLabel("  Snake", new Font("Arial", Font.BOLD, 21),
+                        xPositionLeft, yPositionLeft, 200, 25);
+                yPositionLeft += 30;
+                entryLabel.setHorizontalAlignment(SwingConstants.LEFT);
+                leaderboardPanel.add(entryLabel);
+            }
+            if(gameCounter == 6){
+                entryLabel = createLabel("  PacMan", new Font("Arial", Font.BOLD, 21),
+                        xPositionRight, yPositionRight, 200, 25);
+                yPositionRight += 30;
+                entryLabel.setHorizontalAlignment(SwingConstants.LEFT);
+                leaderboardPanel.add(entryLabel);
+            }
+            if(gameCounter == 9){
+                yPositionRight += 30;
+                entryLabel = createLabel("  Mine Sweeper", new Font("Arial", Font.BOLD, 21),
+                        xPositionRight, yPositionRight, 200, 25);
+                yPositionRight += 30;
+                entryLabel.setHorizontalAlignment(SwingConstants.LEFT);
+                leaderboardPanel.add(entryLabel);
+            }
+            if (gameCounter < 6) {
+                entryLabel = createLabel(entry, new Font("Arial", Font.PLAIN, 19),
+                        xPositionLeft, yPositionLeft, 200, 25);
+                yPositionLeft += 20;
+            } else {
+                entryLabel = createLabel(entry, new Font("Arial", Font.PLAIN, 19),
+                        xPositionRight, yPositionRight, 200, 25);
+                yPositionRight += 20;
+            }
+            entryLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            leaderboardPanel.add(entryLabel);
+            gameCounter++;
+        }
+
+        JButton backButton = createButton("BACK", 170, 320, e -> {
+            leaderboardPanel.setVisible(false);
+            swapViewToMainMenu(false);
+        });
+
+        leaderboardPanel.add(leaderboardLabel);
+        leaderboardPanel.add(backButton);
+
+        add(leaderboardPanel);
+    }
+
 
     private JPanel createPanel(int x, int y, int width, int height, LayoutManager layout) {
         JPanel panel = new JPanel();

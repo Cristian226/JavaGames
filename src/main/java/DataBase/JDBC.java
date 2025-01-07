@@ -3,6 +3,7 @@ package DataBase;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Objects;
 import App.App;
 
@@ -145,6 +146,32 @@ public class JDBC {
             e.printStackTrace();
             return "Error adding activity: " + e.getMessage();
         }
+    }
+
+    public static ArrayList<String> getLeaderboardData() {
+        ArrayList<String> leaderboardEntries = new ArrayList<>();
+        String query = "SELECT games_table.name, leaderboard_table.rank, " +
+                "users_table.username, leaderboard_table.score " +
+                "FROM leaderboard_table " +
+                "JOIN games_table ON leaderboard_table.id_game = games_table.id_game " +
+                "JOIN users_table ON leaderboard_table.id_user = users_table.id_users_table " +
+                "ORDER BY leaderboard_table.id_game, leaderboard_table.rank";
+
+        try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                String gameName = rs.getString("name");
+                int rank = rs.getInt("rank");
+                String username = rs.getString("username");
+                int score = rs.getInt("score");
+                String entry = String.format("%d - %s", score, username);
+                leaderboardEntries.add(entry);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return leaderboardEntries;
     }
 
     public static void main(String[] args) {
