@@ -38,11 +38,13 @@ public class LogInMenu extends JFrame {
         addLogInButton();
         addAddUserButton();
         addErrorLabel();
+        addUsernameLabel();
+        addPasswordLabel();
     }
 
     private void addTitleLabel() {
         JLabel mainMenuLabel = createLabel("LOG IN MENU", new Font("Arial", Font.BOLD, 47),
-                50, 20, 350, 70);
+                50, 5, 350, 70);
         mainMenuLabel.setForeground(Color.BLACK);
         add(mainMenuLabel);
     }
@@ -55,6 +57,18 @@ public class LogInMenu extends JFrame {
         return label;
     }
 
+    private void addUsernameLabel() {
+        JLabel usernameLabel = createLabel("Username", new Font("Arial", Font.PLAIN, 23), 0, 90, 250, 35);
+        usernameLabel.setForeground(Color.BLACK);
+        add(usernameLabel);
+    }
+
+    private void addPasswordLabel() {
+        JLabel passwordLabel = createLabel("Password", new Font("Arial", Font.PLAIN, 23), 0, 160, 250, 35);
+        passwordLabel.setForeground(Color.BLACK);
+        add(passwordLabel);
+    }
+
     private void addErrorLabel(){
         errorLabel = createLabel(" ", new Font("Arial", Font.PLAIN, 25), 0, 320, 450, 25);
         errorLabel.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -65,7 +79,7 @@ public class LogInMenu extends JFrame {
         usernameField = new JTextField();
         usernameField.setFont(new Font("Arial", Font.BOLD, 20));
         usernameField.setBounds(100, 120, 250, 35);
-        usernameField.setBackground(new Color(0x1E6AE1));
+        usernameField.setBackground(Color.white);
         usernameField.setForeground(new Color(0x000000));
         add(usernameField);
     }
@@ -73,8 +87,8 @@ public class LogInMenu extends JFrame {
     private void addPasswordField() {
         passwordField = new JPasswordField();
         passwordField.setFont(new Font("Arial", Font.BOLD, 20));
-        passwordField.setBounds(100, 180, 250, 35);
-        passwordField.setBackground(new Color(0x1E6AE1));
+        passwordField.setBounds(100, 190, 250, 35);
+        passwordField.setBackground(Color.white);
         passwordField.setForeground(new Color(0x000000));
         add(passwordField);
     }
@@ -163,7 +177,7 @@ public class LogInMenu extends JFrame {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.PLAIN, 23));
         button.setBounds(x, y, 160, 38);
-        button.setBackground(new Color(0x5310EF));
+        button.setBackground(new Color(0xFFFFFF));
         button.setForeground(new Color(0x000000));
         button.setFocusable(false);
         button.addActionListener(actionListener);

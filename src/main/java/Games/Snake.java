@@ -22,10 +22,12 @@ public class Snake extends JPanel implements ActionListener {
     private final Tile food;
     private final Random random;
 
-    private int velocityX = 1, velocityY = 0;
+    private int velocityX = 0, velocityY = 0;
     private final Timer gameLoop;
     private boolean gameOver;
     private boolean scoreSaved;
+
+    ArrayList<Tile> walls = new ArrayList<>();
 
     public Snake() {
         // Set up JFrame
@@ -59,6 +61,7 @@ public class Snake extends JPanel implements ActionListener {
         random = new Random();
         scoreSaved = false;
         gameOver = false;
+        generateWalls();
         placeFood();
 
         // Start game loop
@@ -66,11 +69,24 @@ public class Snake extends JPanel implements ActionListener {
         gameLoop.start();
     }
 
+    public void generateWalls(){
+        for(int i = 0; i < BOARD_WIDTH / TILE_SIZE; i++){
+            walls.add(new Tile(i, 0));
+            walls.add(new Tile(i, BOARD_HEIGHT / TILE_SIZE - 1));
+        }
+        Random random = new Random();
+        for(int i = 0; i < 25; i++){
+            walls.add(new Tile(random.nextInt(BOARD_WIDTH / TILE_SIZE), random.nextInt(BOARD_HEIGHT / TILE_SIZE)));
+        }
+
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         draw(g);
     }
+
 
     private void draw(Graphics g) {
         // Draw grid
@@ -80,8 +96,14 @@ public class Snake extends JPanel implements ActionListener {
             g.drawLine(0, i * TILE_SIZE, BOARD_WIDTH, i * TILE_SIZE);
         }
 
-        // Draw food
+        // Draw walls
         g.setColor(Color.RED);
+        for(Tile wall : walls){
+            g.fill3DRect(wall.x * TILE_SIZE, wall.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, true);
+        }
+
+        // Draw food
+        g.setColor(Color.BLUE);
         g.fill3DRect(food.x * TILE_SIZE, food.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, true);
 
         // Draw snake
@@ -120,12 +142,28 @@ public class Snake extends JPanel implements ActionListener {
     private void placeFood() {
         food.x = random.nextInt(BOARD_WIDTH / TILE_SIZE);
         food.y = random.nextInt(BOARD_HEIGHT / TILE_SIZE);
+        if(wallCollision(food))
+            placeFood();
     }
 
     private void move() {
         if (collision(snakeHead, food)) {
             snakeBody.add(new Tile(food.x, food.y));
             placeFood();
+        }
+
+        snakeHead.x += velocityX;
+        snakeHead.y += velocityY;
+
+        if (wallCollision(snakeHead) || bodyCollision(snakeHead)) {
+            gameOver = true;
+        }
+
+        if(snakeHead.x < 0 ){
+            snakeHead.x = BOARD_WIDTH / TILE_SIZE - 1;
+        }
+        if(snakeHead.x > BOARD_WIDTH / TILE_SIZE - 1){
+            snakeHead.x = 0;
         }
 
         for (int i = snakeBody.size() - 1; i > 0; i--) {
@@ -137,28 +175,38 @@ public class Snake extends JPanel implements ActionListener {
             snakeBody.getFirst().y = snakeHead.y;
         }
 
-        snakeHead.x += velocityX;
-        snakeHead.y += velocityY;
 
-        // Check collisions
-        if (snakeHead.x < 0 || snakeHead.x >= BOARD_WIDTH / TILE_SIZE ||
-                snakeHead.y < 0 || snakeHead.y >= BOARD_HEIGHT / TILE_SIZE ||
-                snakeBody.stream().anyMatch(part -> collision(snakeHead, part))) {
-            gameOver = true;
-        }
+
+
+
     }
 
     private boolean collision(Tile a, Tile b) {
         return a.x == b.x && a.y == b.y;
     }
 
+    private boolean wallCollision(Tile a){
+        return walls.stream().anyMatch(wall -> collision(a, wall));
+    }
+
+    private boolean bodyCollision(Tile a){
+        for(Tile part : snakeBody){
+            if(collision(a, part)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void resetGame() {
         snakeHead = new Tile(5, 5);
         snakeBody.clear();
-        velocityX = 1;
+        velocityX = 0;
         velocityY = 0;
         gameOver = false;
         scoreSaved = false;
+        walls.clear();
+        generateWalls();
         gameLoop.start();
         placeFood();
     }

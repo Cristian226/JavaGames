@@ -100,9 +100,10 @@ public class MainMenu extends JFrame {
     private JButton createButton(String text, int x, int y, java.awt.event.ActionListener actionListener) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.PLAIN, 16));
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.CENTER);
         button.setBounds(x, y, 110, 35);
-        button.setBackground(new Color(0x5310EF));
+        button.setBackground(Color.white);
         button.setForeground(new Color(0x000000));
         button.setFocusable(false);
         button.addActionListener(actionListener);
