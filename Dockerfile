@@ -1,4 +1,4 @@
-FROM openjdk:23-jdk-slim AS builder
+FROM docker.io/openjdk:23-jdk-slim AS builder
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests -e -X
 
-FROM openjdk:23-jdk-slim
+FROM docker.io/openjdk:23-jdk-slim
 
 WORKDIR /app
 
