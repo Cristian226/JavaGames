@@ -1,5 +1,6 @@
 package DataBase;
 
+import java.net.InetAddress;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,13 +11,24 @@ import App.App;
 public class JDBC {
 
     public static Connection getConnection() {
+        String host = "localhost";  // Default to localhost for Windows
+        String ip = "192.168.0.193";  // IP for Windows when running in WSL
+
+        try {
+            String osName = System.getProperty("os.name").toLowerCase();
+            if (osName.contains("linux") && InetAddress.getByName("localhost").isReachable(500)) {
+                host = ip;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             return DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/javagames_schema",
-                    "root",
-                    "cristi04");
-        }
-        catch (SQLException e) {
+                    "jdbc:mysql://" + host + ":3306/javagames_schema",
+                    "app_user",  // MySQL user
+                    "cristi04");  // MySQL password
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }

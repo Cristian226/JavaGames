@@ -2,7 +2,10 @@ package Games;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import DataBase.JDBC;
@@ -50,10 +53,26 @@ public class FlappyBird extends JPanel implements ActionListener {
     }
 
     private void loadImages() {
-        backgroundImg = new ImageIcon("src/main/resources/FlappyBirdImages/flappybirdbg.png").getImage();
-        birdImg = new ImageIcon("src/main/resources/FlappyBirdImages/flappybird.png").getImage();
-        topPipeImg = new ImageIcon("src/main/resources/FlappyBirdImages/toppipe.png").getImage();
-        bottomPipeImg = new ImageIcon("src/main/resources/FlappyBirdImages/bottompipe.png").getImage();
+        backgroundImg = loadIcon("flappybirdbg.png");
+        birdImg = loadIcon("flappybird.png");
+        topPipeImg = loadIcon("toppipe.png");
+        bottomPipeImg = loadIcon("bottompipe.png");
+    }
+
+    private Image loadIcon(String imageName) {
+        try {
+            // Use getResourceAsStream for JAR compatibility
+            InputStream imgStream = getClass().getResourceAsStream("/FlappyBirdImages/" + imageName);
+            if (imgStream == null) {
+                System.err.println("Image not found: /MenuImages/" + imageName);
+                return null;
+            }
+            return ImageIO.read(imgStream);
+        } catch (IOException e) {
+            System.err.println("Error loading image: " + imageName);
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void initializeGame() {

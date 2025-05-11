@@ -4,9 +4,12 @@ import DataBase.JDBC;
 import Menus.MainMenu;
 import App.App;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -89,7 +92,19 @@ public class PacMan extends JPanel implements ActionListener {
     }
 
     private Image loadImage(String fileName) {
-        return new ImageIcon("src/main/resources/PacManImages/" + fileName).getImage();
+        try {
+            // Use getResourceAsStream for JAR compatibility
+            InputStream imgStream = getClass().getResourceAsStream("/PacManImages/" + fileName);
+            if (imgStream == null) {
+                System.err.println("Image not found: /PacManImages/" + fileName);
+                return null;
+            }
+            return ImageIO.read(imgStream);
+        } catch (IOException e) {
+            System.err.println("Error loading image: " + fileName);
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void loadMap() {

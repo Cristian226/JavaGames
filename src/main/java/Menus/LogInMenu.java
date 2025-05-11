@@ -1,7 +1,11 @@
 package Menus;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+
 import DataBase.JDBC;
 import App.App;
 
@@ -18,17 +22,32 @@ public class LogInMenu extends JFrame {
 
     private void initializeFrame() {
         setTitle("LogInMenu");
-        setIconImage(loadIcon("src/main/resources/MenuImages/controller.png"));
+        setIconImage(loadIcon("controller.png"));
+        pack();
+        setMinimumSize(new Dimension(450,400));
         setSize(450, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(new Color(30, 203, 225));
         setLayout(null);
         setResizable(false);
+        pack();
     }
 
-    private Image loadIcon(String path) {
-        return new ImageIcon(path).getImage();
+    private Image loadIcon(String imageName) {
+        try {
+            // Use getResourceAsStream for JAR compatibility
+            InputStream imgStream = getClass().getResourceAsStream("/MenuImages/" + imageName);
+            if (imgStream == null) {
+                System.err.println("Image not found: /MenuImages/" + imageName);
+                return null;
+            }
+            return ImageIO.read(imgStream);
+        } catch (IOException e) {
+            System.err.println("Error loading image: " + imageName);
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void addComponents() {

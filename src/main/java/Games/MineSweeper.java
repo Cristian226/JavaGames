@@ -4,9 +4,12 @@ import DataBase.JDBC;
 import Menus.MainMenu;
 import App.App;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -53,7 +56,7 @@ public class MineSweeper {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.setIconImage(new ImageIcon("src/main/resources/MenuImages/mineSweeper.png").getImage());
+        frame.setIconImage(loadIcon("mineSweeper.png"));
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -61,6 +64,22 @@ public class MineSweeper {
                 new MainMenu();
             }
         });
+    }
+
+    private Image loadIcon(String imageName) {
+        try {
+            // Use getResourceAsStream for JAR compatibility
+            InputStream imgStream = getClass().getResourceAsStream("/MenuImages/" + imageName);
+            if (imgStream == null) {
+                System.err.println("Image not found: /MenuImages/" + imageName);
+                return null;
+            }
+            return ImageIO.read(imgStream);
+        } catch (IOException e) {
+            System.err.println("Error loading image: " + imageName);
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void initializeTextLabel() {
@@ -76,7 +95,7 @@ public class MineSweeper {
 
     private void initializeBoardPanel() {
         boardPanel = new JPanel() {
-            private Image backgroundImage = new ImageIcon("src/main/resources/MenuImages/mineSweeper.png").getImage();
+            private Image backgroundImage = loadIcon("mineSweeper.png");
 
             @Override
             protected void paintComponent(Graphics g) {

@@ -7,8 +7,11 @@ import Games.PacMan;
 import Games.Snake;
 import App.App;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MainMenu extends JFrame {
@@ -25,13 +28,16 @@ public class MainMenu extends JFrame {
 
     private void initializeFrame() {
         setTitle("MainMenu");
-        setIconImage(loadIcon("src/main/resources/MenuImages/controller.png"));
+        setIconImage(loadIcon("controller.png"));
+        pack();
+        setMinimumSize(new Dimension(450, 400));
         setSize(450, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(new Color(30, 203, 225));
         setLayout(null);
         setResizable(false);
+        pack();
     }
 
     private void addComponents() {
@@ -42,8 +48,20 @@ public class MainMenu extends JFrame {
         addLeaderboardPanel();
     }
 
-    private Image loadIcon(String path) {
-        return new ImageIcon(path).getImage();
+    private Image loadIcon(String imageName) {
+        try {
+            // Use getResourceAsStream for JAR compatibility
+            InputStream imgStream = getClass().getResourceAsStream("/MenuImages/" + imageName);
+            if (imgStream == null) {
+                System.err.println("Image not found: /MenuImages/" + imageName);
+                return null;
+            }
+            return ImageIO.read(imgStream);
+        } catch (IOException e) {
+            System.err.println("Error loading image: " + imageName);
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void addTitleLabel() {
@@ -78,10 +96,10 @@ public class MainMenu extends JFrame {
         buttonsPanel = createPanel(25, 200, 390, 140, new GridLayout(2, 2, 40, 15));
         add(buttonsPanel);
 
-        addGameButton("Flappy Bird", "src/main/resources/MenuImages/flappyBirdButtonIcon.jpg");
-        addGameButton("Snake", "src/main/resources/MenuImages/snakeIcon.jpg");
-        addGameButton("Mine Sweeper", "src/main/resources/MenuImages/mineSweeperAirView.jpg");
-        addGameButton("PacMan", "src/main/resources/MenuImages/pacman_img.png");
+        addGameButton("Flappy Bird", "flappyBirdButtonIcon.jpg");
+        addGameButton("Snake", "snakeIcon.jpg");
+        addGameButton("Mine Sweeper", "mineSweeperAirView.jpg");
+        addGameButton("PacMan", "pacman_img.png");
     }
 
     private void addGameButton(String name, String path) {
