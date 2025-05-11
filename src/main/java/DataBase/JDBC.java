@@ -13,6 +13,7 @@ public class JDBC {
     public static Connection getConnection() {
         String host = "localhost";  // Default to localhost for Windows
         String ip = "192.168.0.193";  // IP for Windows when running in WSL
+        // XD XD
 
         try {
             String osName = System.getProperty("os.name").toLowerCase();
