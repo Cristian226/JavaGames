@@ -14,13 +14,13 @@ public class JDBC {
         // Load configuration from environment variables or App.ipAddress
         String host = System.getenv("MYSQL_HOST") != null ? System.getenv("MYSQL_HOST") :
                 (App.ipAddress != null && !App.ipAddress.isEmpty() ? App.ipAddress : "localhost");
-        String port = "3306";
+        String port = "3307";
         String dbName = "javagames_schema";
         String user = "app_user";
         String password = "cristi04";
 
         String url = "jdbc:mysql://" + host + ":" + port + "/" + dbName +
-                "?useSSL=false&tcpKeepAlive=true&connectTimeout=5000&socketTimeout=30000";
+                "?useSSL=false&allowPublicKeyRetrieval=true&tcpKeepAlive=true&connectTimeout=5000&socketTimeout=30000";
 
         try {
             // Reconnect if connection is null or closed
