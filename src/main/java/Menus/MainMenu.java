@@ -237,7 +237,7 @@ public class MainMenu extends JFrame {
         leaderboardLabel.setHorizontalAlignment(SwingConstants.CENTER);
         leaderboardLabel.setForeground(new Color(0xAA1401));
 
-        ArrayList<String> leaderboardEntries = JDBC.getLeaderboardData();
+        ArrayList<String> leaderboardEntries = JDBC.GetLeaderboardData();
         int yPositionLeft = 80;
         int yPositionRight = 80;
         int xPositionLeft = 10;

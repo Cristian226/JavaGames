@@ -38,7 +38,7 @@ public class App
         if (args.length > 0) {
             ipAddress = args[0];
         }
-       new MainMenu();
+       new LogInMenu();
 
     }
 
