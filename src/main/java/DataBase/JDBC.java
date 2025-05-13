@@ -1,39 +1,40 @@
 package DataBase;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import App.App;
 
 public class JDBC {
 
     public static Connection getConnection() {
-        String host = "localhost";  // Default to localhost for Windows
-        String ip = "192.168.0.193";  // IP for Windows when running in WSL
-        // XD XD
-
-        try {
-            String osName = System.getProperty("os.name").toLowerCase();
-            if (osName.contains("linux") && InetAddress.getByName("localhost").isReachable(500)) {
-                host = ip;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String host = "localhost";
+        if(App.ipAddress != null) {
+            host = App.ipAddress.length() > 0 ? App.ipAddress : "localhost";
         }
 
         try {
-            return DriverManager.getConnection(
-                    "jdbc:mysql://" + host + ":3306/javagames_schema",
-                    "app_user",  // MySQL user
-                    "cristi04");  // MySQL password
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL JDBC Driver not found", e);
+        }
+
+        String url = "jdbc:mysql://" + host + ":3306/javagames_schema";
+        try {
+            return DriverManager.getConnection(url, "app_user", "cristi04");
         } catch (SQLException e) {
+            System.err.println("Failed to connect to: " + url);
             e.printStackTrace();
             return null;
         }
     }
+
 
     public static String AddUser(String username, String password) {
         Connection connection = getConnection();

@@ -8,6 +8,7 @@ public class App
 {
     private static String currentUser = "defaultuser";
     private static int currentUserID = 89;
+    public static String ipAddress;
 
     public static int flappyBirdID = 1;
     public static int snakeID = 2;
@@ -34,6 +35,9 @@ public class App
 
     public static void main( String[] args )
     {
+        if (args.length > 0) {
+            ipAddress = args[0];
+        }
        new MainMenu();
 
     }
