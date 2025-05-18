@@ -1,0 +1,11 @@
+podman build --pull=always -t cristian226/javagames:1.0.0 -f Dockerfile .
+
+podman login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io
+
+podman tag cristian226/javagames:1.0.0 cristian226/javagames:latest
+
+podman push cristian226/javagames:latest
+
+podman tag javagames:1.0.0 cristian226/javagames:${BUILD_NUMBER}
+
+podman push cristian226/javagames:${BUILD_NUMBER}
